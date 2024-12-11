@@ -160,34 +160,34 @@
         <div id="marsPosition"></div>
     </div>
 
+    <title>Simulasi Persamaan Diferensial</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="300" height="300"></canvas>
+
     <script>
-        function updateMarsPosition() {
-            const date = document.getElementById('date').value;
-            const dateObj = new Date(date);
-            const dayOfYear = getDayOfYear(dateObj);
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
 
-            // Kecepatan revolusi Mars (1 tahun = 687 hari Mars)
-            const marsOrbitDuration = 687;
-            const marsOrbitAngle = (360 * dayOfYear) / marsOrbitDuration;
-
-            const mars = document.getElementById('marsPosition');
-            mars.style.transform = `rotate(${marsOrbitAngle}deg)`;
-
-            // Menambahkan animasi kembali ketika posisi diubah
-            mars.style.transition = 'transform 1s ease-in-out';
+        // Persamaan diferensial sederhana (dy/dx = x)
+        function dydx(x, y) {
+            return x;
         }
 
-        // Fungsi untuk menghitung hari ke-n dalam tahun dari sebuah tanggal
-        function getDayOfYear(date) {
-            const start = new Date(date.getFullYear(), 0, 0);
-            const diff = date - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            return Math.floor(diff / oneDay);
+        // Metode Euler (contoh sederhana)
+        function euler(x0, y0, h, n) {
+            let x = x0;
+            let y = y0;
+            for (let i = 0; i < n; i++) {
+                y += h * dydx(x, y);
+                x += h;
+                // Gambar titik pada kanvas
+                ctx.fillRect(x * 10, y * 10, 2, 2);
+            }
         }
 
-        // Inisialisasi posisi Mars saat pertama kali muat
-        updateMarsPosition();
+        // Contoh pemanggilan
+        euler(0, 0, 0.1, 100);
     </script>
-
 </body>
 </html>
